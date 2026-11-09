@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://hl0aym5br8po"]
+
+[ext_resource type="Script" uid="uid://qcynv8wpm606" path="res://scripts/player/player.gd" id="1_3vyb7"]
+[ext_resource type="Shader" uid="uid://dfmo5bcy01foc" path="res://shaders/flashlight_glare.gdshader" id="2_g2els"]
+[ext_resource type="Script" uid="uid://w45e76powb7t" path="res://scripts/player/flashlight_glare.gd" id="2_qhqgy"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_x83gm"]
+radius = 0.3
+height = 1.8
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_gku0b"]
+radius = 0.3
+height = 1.8
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3vyb7"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = false
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = false
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Head:rotation")
+properties/2/spawn = false
+properties/2/replication_mode = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3vyb7"]
+shader = ExtResource("2_g2els")
+shader_parameter/strength = 0.0
+shader_parameter/source_uv = Vector2(0.5, 0.5)
+shader_parameter/aspect_ratio = 1.0
+shader_parameter/glare_color = Color(1, 1, 1, 1)
+
+[node name="Player" type="CharacterBody3D" unique_id=17088492]
+script = ExtResource("1_3vyb7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1585368308]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_x83gm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=714039503]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+visible = false
+mesh = SubResource("CapsuleMesh_gku0b")
+
+[node name="Head" type="Node3D" parent="." unique_id=1678142580]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head" unique_id=118056987]
+current = true
+
+[node name="HandSocket" type="Marker3D" parent="Head/Camera3D" unique_id=1196434792]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.2, -0.45)
+
+[node name="InteractionRay" type="RayCast3D" parent="Head/Camera3D" unique_id=863591000]
+target_position = Vector3(0, 0, -2.5)
+collision_mask = 3
+collide_with_areas = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=345631451]
+replication_interval = 0.05
+replication_config = SubResource("SceneReplicationConfig_3vyb7")
+
+[node name="FlashlightGlare" type="CanvasLayer" parent="." unique_id=1491110658]
+layer = 10
+script = ExtResource("2_qhqgy")
+max_strength = 1.0
+
+[node name="Overlay" type="ColorRect" parent="FlashlightGlare" unique_id=1264366802]
+material = SubResource("ShaderMaterial_3vyb7")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

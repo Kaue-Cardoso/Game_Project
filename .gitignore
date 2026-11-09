@@ -1,0 +1,43 @@
+# Godot: cache de importacao e estado local do editor (regenerados).
+/.godot/
+
+# Templates locais de compilacao Android e credenciais de exportacao.
+/android/
+/.godot_export_credentials
+/export_credentials.cfg
+
+# Destinos reservados para builds/exportacoes locais.
+/build/
+/builds/
+/export/
+/exports/
+
+# Arquivos temporarios e backups de editores.
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+
+# Preferencias locais de IDEs.
+/.vscode/
+/.idea/
+
+# Metadados do sistema operacional.
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+
+# Segredos locais; exemplos podem ser versionados.
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Manter no Git: *.uid, *.import, export_presets.cfg, addons/ e terrain/.
+# Esses arquivos preservam referencias, opcoes de importacao e dados do jogo.
+
+# Historico local da conversa de desenvolvimento.
+/mudancas.md

@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://3ix60l3uwlhw"]
+
+[ext_resource type="Script" uid="uid://brgsvxwter53a" path="res://scripts/items/flashlight.gd" id="1_script"]
+[ext_resource type="Resource" uid="uid://di8cr7eo7sehr" path="res://resources/items/flashlight_basic.tres" id="2_7qwfo"]
+
+[sub_resource type="StandardMaterial3D" id="Material_body"]
+albedo_color = Color(0.8, 0.6, 0.12, 1)
+emission_enabled = true
+emission = Color(0.15, 0.1, 0.02, 1)
+
+[sub_resource type="BoxMesh" id="Mesh_body"]
+material = SubResource("Material_body")
+size = Vector3(0.08, 0.08, 0.25)
+
+[sub_resource type="SphereShape3D" id="Shape_pickup"]
+radius = 0.3
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_xe56y"]
+properties/0/path = NodePath(".:holder_peer_id")
+properties/0/spawn = false
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:is_on")
+properties/1/spawn = false
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:floor_transform")
+properties/2/spawn = false
+properties/2/replication_mode = 1
+
+[node name="Flashlight" type="Node3D" unique_id=1867472189]
+script = ExtResource("1_script")
+item_data = ExtResource("2_7qwfo")
+light_range = 10.0
+
+[node name="Model" type="MeshInstance3D" parent="." unique_id=1953282887]
+cast_shadow = 0
+mesh = SubResource("Mesh_body")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1856064324]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.14)
+shadow_enabled = true
+
+[node name="PickupArea" type="Area3D" parent="." unique_id=2144007361]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PickupArea" unique_id=1174662118]
+shape = SubResource("Shape_pickup")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=897588248]
+replication_interval = 0.05
+replication_config = SubResource("SceneReplicationConfig_xe56y")

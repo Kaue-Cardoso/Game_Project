@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cy66c5o84oqqk"]
+
+[ext_resource type="Script" uid="uid://0ilp0pdbhv3v" path="res://scripts/items/item_data.gd" id="1_a7vyt"]
+
+[resource]
+script = ExtResource("1_a7vyt")
+display_name = "Reliquia Dourada"
+weight_kg = 3.0
+sale_value = 50
+metadata/_custom_type_script = "uid://0ilp0pdbhv3v"

@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://c7xrrkutybjh1"]
+
+[ext_resource type="Script" uid="uid://bj86hk3ytalei" path="res://scripts/items/collectible_item.gd" id="1_4k2ws"]
+[ext_resource type="Resource" uid="uid://cy66c5o84oqqk" path="res://resources/items/golden_relic.tres" id="2_uilgy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gku0b"]
+albedo_color = Color(0.9607843, 0.6745098, 0.20784314, 1)
+emission_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_x83gm"]
+size = Vector3(0.16, 0.16, 0.24)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_c77sh"]
+radius = 0.3
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_0cdut"]
+properties/0/path = NodePath(".:holder_peer_id")
+properties/0/spawn = false
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:floor_transform")
+properties/1/spawn = false
+properties/1/replication_mode = 1
+
+[node name="ValuableItem" type="Node3D" unique_id=1919827932]
+script = ExtResource("1_4k2ws")
+item_data = ExtResource("2_uilgy")
+ground_clearance = 0.09
+
+[node name="Model" type="MeshInstance3D" parent="." unique_id=755893953]
+material_override = SubResource("StandardMaterial3D_gku0b")
+mesh = SubResource("BoxMesh_x83gm")
+
+[node name="PickupArea" type="Area3D" parent="." unique_id=1549942459]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PickupArea" unique_id=1130580119]
+shape = SubResource("SphereShape3D_c77sh")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=548455910]
+replication_interval = 0.05
+replication_config = SubResource("SceneReplicationConfig_0cdut")

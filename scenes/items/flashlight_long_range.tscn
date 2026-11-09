@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://c0d2i0hnt0te4"]
+
+[ext_resource type="PackedScene" uid="uid://3ix60l3uwlhw" path="res://scenes/items/flashlight.tscn" id="1_8xhwt"]
+[ext_resource type="Resource" uid="uid://5ptgfie0tg38" path="res://resources/items/flashlight_long_range.tres" id="2_lmahf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xe56y"]
+albedo_color = Color(0.31764707, 1, 0.35686275, 1)
+emission_enabled = true
+emission = Color(6.256998e-07, 0.34784803, 0.23743668, 1)
+
+[node name="FlashlightLongRange" unique_id=1867472189 instance=ExtResource("1_8xhwt")]
+item_data = ExtResource("2_lmahf")
+light_energy = 4.0
+light_range = 22.0
+light_angle = 15.0
+floor_transform = null
+holder_peer_id = null
+is_on = null
+
+[node name="Model" parent="." index="0" unique_id=1953282887]
+material_override = SubResource("StandardMaterial3D_xe56y")

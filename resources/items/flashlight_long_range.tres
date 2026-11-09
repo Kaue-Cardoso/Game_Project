@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://5ptgfie0tg38"]
+
+[ext_resource type="Script" uid="uid://0ilp0pdbhv3v" path="res://scripts/items/item_data.gd" id="1_vjpnu"]
+
+[resource]
+script = ExtResource("1_vjpnu")
+display_name = "Lanterna Longo Alcance"
+weight_kg = 1.2
+metadata/_custom_type_script = "uid://0ilp0pdbhv3v"
