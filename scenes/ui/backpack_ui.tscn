@@ -1,0 +1,137 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/backpack_ui.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="Panel_style"]
+bg_color = Color(0.055, 0.075, 0.085, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.35, 0.3, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_left = 10
+corner_radius_bottom_right = 10
+
+[node name="BackpackUI" type="CanvasLayer"]
+layer = 30
+visible = false
+script = ExtResource("1_script")
+
+[node name="Screen" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
+
+[node name="Margin" type="MarginContainer" parent="Screen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Panel" type="PanelContainer" parent="Screen/Margin"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("Panel_style")
+
+[node name="Padding" type="MarginContainer" parent="Screen/Margin/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="Layout" type="VBoxContainer" parent="Screen/Margin/Panel/Padding"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="HBoxContainer" parent="Screen/Margin/Panel/Padding/Layout"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Screen/Margin/Panel/Padding/Layout/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Mochila"
+
+[node name="Close" type="Button" parent="Screen/Margin/Panel/Padding/Layout/Header"]
+custom_minimum_size = Vector2(140, 38)
+layout_mode = 2
+text = "Fechar [Esc]"
+
+[node name="Hint" type="Label" parent="Screen/Margin/Panel/Padding/Layout"]
+layout_mode = 2
+text = "Clique em um espaço para selecionar; clique novamente para limpar. Sem destino escolhido, usamos o primeiro espaço vazio."
+autowrap_mode = 3
+
+[node name="LoadLabel" type="Label" parent="Screen/Margin/Panel/Padding/Layout"]
+layout_mode = 2
+text = "Carga: 0,0 / 40,0 kg"
+
+[node name="Columns" type="HBoxContainer" parent="Screen/Margin/Panel/Padding/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 24
+
+[node name="Basic" type="VBoxContainer" parent="Screen/Margin/Panel/Padding/Layout/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Heading" type="Label" parent="Screen/Margin/Panel/Padding/Layout/Columns/Basic"]
+layout_mode = 2
+text = "Mãos e bolsos"
+
+[node name="Slots" type="VBoxContainer" parent="Screen/Margin/Panel/Padding/Layout/Columns/Basic"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Storage" type="VBoxContainer" parent="Screen/Margin/Panel/Padding/Layout/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Heading" type="Label" parent="Screen/Margin/Panel/Padding/Layout/Columns/Storage"]
+layout_mode = 2
+text = "Dentro da mochila"
+
+[node name="Slots" type="VBoxContainer" parent="Screen/Margin/Panel/Padding/Layout/Columns/Storage"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Actions" type="HBoxContainer" parent="Screen/Margin/Panel/Padding/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Store" type="Button" parent="Screen/Margin/Panel/Padding/Layout/Actions"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Guardar →"
+
+[node name="Take" type="Button" parent="Screen/Margin/Panel/Padding/Layout/Actions"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "← Retirar"
+
+[node name="Drop" type="Button" parent="Screen/Margin/Panel/Padding/Layout/Actions"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Soltar no chão"
+
+[node name="Status" type="Label" parent="Screen/Margin/Panel/Padding/Layout"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+text = "Selecione um item."
+autowrap_mode = 3

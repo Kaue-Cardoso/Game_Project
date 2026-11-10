@@ -25,11 +25,20 @@ properties/1/replication_mode = 1
 properties/2/path = NodePath(".:floor_transform")
 properties/2/spawn = false
 properties/2/replication_mode = 1
+properties/3/path = NodePath(".:inventory_slot")
+properties/3/spawn = false
+properties/3/replication_mode = 1
+properties/4/path = NodePath(".:container_name")
+properties/4/spawn = false
+properties/4/replication_mode = 1
+properties/5/path = NodePath(".:container_slot")
+properties/5/spawn = false
+properties/5/replication_mode = 1
 
 [node name="Flashlight" type="Node3D" unique_id=1867472189]
 script = ExtResource("1_script")
-item_data = ExtResource("2_7qwfo")
 light_range = 10.0
+item_data = ExtResource("2_7qwfo")
 
 [node name="Model" type="MeshInstance3D" parent="." unique_id=1953282887]
 cast_shadow = 0

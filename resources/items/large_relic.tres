@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/items/item_data.gd" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+display_name = "Relíquia grande"
+size = 2
+weight_kg = 8.0
+sale_value = 120

@@ -3,6 +3,23 @@
 [ext_resource type="Script" uid="uid://qcynv8wpm606" path="res://scripts/player/player.gd" id="1_3vyb7"]
 [ext_resource type="Shader" uid="uid://dfmo5bcy01foc" path="res://shaders/flashlight_glare.gdshader" id="2_g2els"]
 [ext_resource type="Script" uid="uid://w45e76powb7t" path="res://scripts/player/flashlight_glare.gd" id="2_qhqgy"]
+[ext_resource type="Script" uid="uid://bplxao3ao7rw4" path="res://scripts/player/inventory.gd" id="4_dqkch"]
+[ext_resource type="PackedScene" path="res://scenes/ui/backpack_ui.tscn" id="5_backpack_ui"]
+[ext_resource type="Script" path="res://scripts/player/player_vitals.gd" id="6_vitals"]
+
+[sub_resource type="SceneReplicationConfig" id="Replication_vitals"]
+properties/0/path = NodePath(".:carried_weight_kg")
+properties/0/spawn = false
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:current_stamina")
+properties/1/spawn = false
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:is_sprinting")
+properties/2/spawn = false
+properties/2/replication_mode = 1
+properties/3/path = NodePath(".:sprint_exhausted")
+properties/3/spawn = false
+properties/3/replication_mode = 1
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_x83gm"]
 radius = 0.3
@@ -56,6 +73,12 @@ target_position = Vector3(0, 0, -2.5)
 collision_mask = 3
 collide_with_areas = true
 
+[node name="HandSocketLeft" type="Marker3D" parent="Head/Camera3D" unique_id=1520128140]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, -0.2, -0.45)
+
+[node name="TwoHandSocket" type="Marker3D" parent="Head/Camera3D"]
+position = Vector3(0, -0.3, -0.7)
+
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=345631451]
 replication_interval = 0.05
 replication_config = SubResource("SceneReplicationConfig_3vyb7")
@@ -73,3 +96,49 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="Inventory" type="Node" parent="." unique_id=1407217291]
+script = ExtResource("4_dqkch")
+
+[node name="InventoryHUD" type="CanvasLayer" parent="." unique_id=523896210]
+layer = 20
+
+[node name="SlotsLabel" type="Label" parent="InventoryHUD" unique_id=306875794]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 21.0
+offset_bottom = 43.0
+
+[node name="BackpackUI" parent="." instance=ExtResource("5_backpack_ui")]
+
+[node name="Status" type="VBoxContainer" parent="InventoryHUD"]
+offset_left = 20.0
+offset_top = 160.0
+offset_right = 300.0
+offset_bottom = 270.0
+theme_override_constants/separation = 6
+
+[node name="LoadLabel" type="Label" parent="InventoryHUD/Status"]
+layout_mode = 2
+text = "Carga: 0,0 / 40,0 kg"
+
+[node name="StaminaLabel" type="Label" parent="InventoryHUD/Status"]
+layout_mode = 2
+text = "Stamina: 100 / 100"
+
+[node name="StaminaBar" type="ProgressBar" parent="InventoryHUD/Status"]
+custom_minimum_size = Vector2(240, 14)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="MovementLabel" type="Label" parent="InventoryHUD/Status"]
+layout_mode = 2
+text = "Caminhando — Shift para correr"
+
+[node name="Vitals" type="Node" parent="."]
+script = ExtResource("6_vitals")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Vitals"]
+replication_interval = 0.05
+replication_config = SubResource("Replication_vitals")

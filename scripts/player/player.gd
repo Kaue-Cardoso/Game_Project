@@ -6,11 +6,17 @@ const CollectibleItem = preload("res://scripts/items/collectible_item.gd")
 @export var jump_velocity: float = 4.5
 @export var mouse_sensitivity: float = 0.002
 
+@onready var inventory: Node = $Inventory
+@onready var backpack_ui: CanvasLayer = $BackpackUI
+@onready var vitals: Node = $Vitals
 @onready var head: Node3D = $Head
 @onready var hand_socket: Marker3D = $Head/Camera3D/HandSocket
 @onready var interaction_ray: RayCast3D = $Head/Camera3D/InteractionRay
 
-var equipped_item: CollectibleItem = null
+var equipped_item: CollectibleItem:
+	get:
+		return inventory.get_item_in_slot(inventory.active_hand) as CollectibleItem
+
 var interaction_requested: bool = false
 
 
@@ -29,14 +35,39 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_multiplayer_authority():
 		return
+	if backpack_ui.is_open:
+		return
+	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and event.is_action_pressed("open_backpack") and not event.is_echo():
+		var item := equipped_item
+		if item != null and backpack_ui.open_menu(item):
+			get_viewport().set_input_as_handled()
+		return
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	
+
+	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not event.is_echo():
+		if event.is_action_pressed("switch_hand"):
+			inventory.toggle_active_hand()
+			return
+
+		for slot_index in range(4):
+			if event.is_action_pressed("slot_%d" % (slot_index + 1)):
+				inventory.select_slot(slot_index)
+				return
+
+		if event.is_action_pressed("inventory_next"):
+			inventory.cycle_slot(1)
+			return
+
+		if event.is_action_pressed("inventory_previous"):
+			inventory.cycle_slot(-1)
+			return
+
 	if event.is_action_pressed("drop_item") and not event.is_echo():
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			if is_instance_valid(equipped_item):
 				equipped_item.request_drop.rpc_id(1)
-				
+
 	if event.is_action_pressed("toggle_flashlight") and not event.is_echo():
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			if is_instance_valid(equipped_item):
@@ -45,7 +76,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("interact") and not event.is_echo():
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			interaction_requested = true
-			
+
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -66,28 +97,34 @@ func _physics_process(delta: float) -> void:
 		return
 	if interaction_requested:
 		interaction_requested = false
-		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not backpack_ui.is_open:
 			try_pick_up()
 
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		var input_direction := Input.get_vector(
+	var controls_enabled: bool = Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not backpack_ui.is_open
+	var input_direction := Vector2.ZERO
+	if controls_enabled:
+		input_direction = Input.get_vector(
 			"move_left",
 			"move_right",
 			"move_forward",
 			"move_back"
 		)
+	var wants_sprint: bool = controls_enabled and Input.is_action_pressed("sprint")
+	vitals.submit_movement_input(wants_sprint, not input_direction.is_zero_approx(), controls_enabled)
 
+	if controls_enabled:
 		var direction := transform.basis * Vector3(
 			input_direction.x,
 			0.0,
 			input_direction.y
 		)
 
-		velocity.x = direction.x * move_speed
-		velocity.z = direction.z * move_speed
+		var current_speed: float = move_speed * vitals.get_speed_factor(wants_sprint)
+		velocity.x = direction.x * current_speed
+		velocity.z = direction.z * current_speed
 
 		if Input.is_action_just_pressed("jump") and is_on_floor():
 			velocity.y = jump_velocity
@@ -99,8 +136,6 @@ func _physics_process(delta: float) -> void:
 
 
 func try_pick_up() -> void:
-	if is_instance_valid(equipped_item):
-		return
 
 	interaction_ray.force_raycast_update()
 	if not interaction_ray.is_colliding():

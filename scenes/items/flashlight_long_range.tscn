@@ -9,13 +9,10 @@ emission_enabled = true
 emission = Color(6.256998e-07, 0.34784803, 0.23743668, 1)
 
 [node name="FlashlightLongRange" unique_id=1867472189 instance=ExtResource("1_8xhwt")]
-item_data = ExtResource("2_lmahf")
 light_energy = 4.0
 light_range = 22.0
 light_angle = 15.0
-floor_transform = null
-holder_peer_id = null
-is_on = null
+item_data = ExtResource("2_lmahf")
 
 [node name="Model" parent="." index="0" unique_id=1953282887]
 material_override = SubResource("StandardMaterial3D_xe56y")

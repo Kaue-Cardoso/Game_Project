@@ -19,7 +19,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	super(delta)
-	light.visible = holder_peer_id != 0 and is_on
+	light.visible = is_equipped() and is_on
 
 
 func _use() -> void:

@@ -6,6 +6,8 @@
 [ext_resource type="Material" uid="uid://uawbru08vfeh" path="res://assets/texture/Grass004_1K-PNG/Grass004_1K-PNG.tres" id="4_tmscs"]
 [ext_resource type="PackedScene" uid="uid://c0d2i0hnt0te4" path="res://scenes/items/flashlight_long_range.tscn" id="5_q04aa"]
 [ext_resource type="PackedScene" uid="uid://c7xrrkutybjh1" path="res://scenes/items/valuable_item.tscn" id="6_s2mfq"]
+[ext_resource type="PackedScene" path="res://scenes/items/large_relic.tscn" id="7_large"]
+[ext_resource type="PackedScene" path="res://scenes/items/backpack_small.tscn" id="8_backpack"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_x83gm"]
 size = Vector2(20, 20)
@@ -163,7 +165,21 @@ environment = SubResource("Environment_x83gm")
 
 [node name="FlashlightLongRange" parent="." unique_id=1867472189 instance=ExtResource("5_q04aa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5802002, 0, -3.6318274)
-item_data = null
+is_on = false
+floor_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+holder_peer_id = 0
 
 [node name="ValuableItem" parent="." unique_id=1919827932 instance=ExtResource("6_s2mfq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5117927, 0.09658533, -3.254299)
+
+[node name="ValuableItem2" parent="." unique_id=1749395814 instance=ExtResource("6_s2mfq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5369947, 0.09658533, -3.254299)
+
+[node name="ValuableItem3" parent="." unique_id=1677198703 instance=ExtResource("6_s2mfq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8445684, 0.09658533, -3.254299)
+
+[node name="LargeRelic" parent="." instance=ExtResource("7_large")]
+position = Vector3(0, 0.16, 1)
+
+[node name="BackpackSmall" parent="." instance=ExtResource("8_backpack")]
+position = Vector3(-1.5, 0.21, 0.5)

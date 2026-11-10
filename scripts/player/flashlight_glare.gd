@@ -41,6 +41,8 @@ func _physics_process(delta: float) -> void:
 			continue
 
 		var spot: SpotLight3D = item.get_node("SpotLight3D")
+		if not spot.is_visible_in_tree():
+			continue
 		var light_position := spot.global_position
 		var light_to_eye := eye_position - light_position
 		var distance := light_to_eye.length()
