@@ -2,20 +2,11 @@
 
 [ext_resource type="Texture2D" uid="uid://dr1sxy5tes8hm" path="res://assets/texture/Bricks113A_1K-PNG/Bricks113A_1K-PNG_AmbientOcclusion.png" id="AmbientOcclusion"]
 [ext_resource type="Texture2D" uid="uid://bbc3mofvywe8s" path="res://assets/texture/Bricks113A_1K-PNG/Bricks113A_1K-PNG_Color.png" id="Color"]
-[ext_resource type="Texture2D" uid="uid://dgwg2p8hgip7g" path="res://assets/texture/Bricks113A_1K-PNG/Bricks113A_1K-PNG_Displacement.png" id="Displacement"]
 [ext_resource type="Texture2D" uid="uid://cw7yaefms2fod" path="res://assets/texture/Bricks113A_1K-PNG/Bricks113A_1K-PNG_NormalGL.png" id="NormalGL"]
-[ext_resource type="Texture2D" uid="uid://dgfnp78rs62xm" path="res://assets/texture/Bricks113A_1K-PNG/Bricks113A_1K-PNG_Roughness.png" id="Roughness"]
 
 [resource]
 albedo_texture = ExtResource("Color")
-roughness_texture = ExtResource("Roughness")
-roughness_texture_channel = 4
-normal_enabled = true
 normal_texture = ExtResource("NormalGL")
-ao_enabled = true
 ao_texture = ExtResource("AmbientOcclusion")
 ao_texture_channel = 4
-heightmap_enabled = true
-heightmap_scale = 1.0
-heightmap_texture = ExtResource("Displacement")
-uv1_scale = Vector3(5, 5, 5)
+uv1_scale = Vector3(10, 10, 10)

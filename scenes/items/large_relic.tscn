@@ -1,14 +1,16 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene format=3 uid="uid://d0ljdurvu66bq"]
 
-[ext_resource type="PackedScene" path="res://scenes/items/valuable_item.tscn" id="1_base"]
-[ext_resource type="Resource" path="res://resources/items/large_relic.tres" id="2_data"]
+[ext_resource type="PackedScene" uid="uid://c7xrrkutybjh1" path="res://scenes/items/valuable_item.tscn" id="1_base"]
+[ext_resource type="Resource" uid="uid://b7k0lxturmfup" path="res://resources/items/large_relic.tres" id="2_data"]
+[ext_resource type="ArrayMesh" uid="uid://lg7sg67jyaww" path="res://assets/models/coin/coin_stack_large.obj" id="3_m6108"]
 
-[sub_resource type="BoxMesh" id="Mesh_large"]
-size = Vector3(0.5, 0.3, 0.4)
-
-[node name="LargeRelic" instance=ExtResource("1_base")]
+[node name="LargeRelic" unique_id=1669952836 instance=ExtResource("1_base")]
 item_data = ExtResource("2_data")
 ground_clearance = 0.16
 
-[node name="Model" parent="." index="0"]
-mesh = SubResource("Mesh_large")
+[node name="Model" parent="." index="0" unique_id=755893953]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -0.031158447, -0.17041846, 0.023809817)
+mesh = ExtResource("3_m6108")
+
+[node name="CollisionShape3D" parent="PickupArea" parent_id_path=PackedInt32Array(1549942459) index="0" unique_id=1130580119]
+debug_color = Color(0, 0.6, 0.69803923, 0.9764706)

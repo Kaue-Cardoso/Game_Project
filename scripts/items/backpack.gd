@@ -13,7 +13,12 @@ func can_be_stored() -> bool:
 
 
 func can_access_storage(peer_id: int) -> bool:
-	return peer_id > 0 and holder_peer_id == peer_id and is_equipped()
+	return (
+		can_interact_with_round()
+		and peer_id > 0
+		and holder_peer_id == peer_id
+		and is_equipped()
+	)
 
 
 func get_item_in_storage(slot_index: int) -> Node3D:
@@ -160,3 +165,6 @@ func _finish_storage_request(peer_id: int, action: String, accepted: bool) -> vo
 @rpc("authority", "call_local", "reliable")
 func _receive_storage_result(action: String, accepted: bool) -> void:
 	storage_request_finished.emit(action, accepted)
+
+func _on_round_reset() -> void:
+	pending_content_drops.clear()

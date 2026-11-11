@@ -35,7 +35,9 @@ func _on_host_pressed() -> void:
 		return
 
 	multiplayer.multiplayer_peer = peer
+	test_map.get_node("RoundManager").prepare_new_session()
 	_enter_map()
+
 	test_map.add_player(multiplayer.get_unique_id())
 	_set_menu_locked(true)
 	status_label.text = "Partida criada. Aguardando jogadores..."
@@ -95,6 +97,7 @@ func _set_menu_locked(locked: bool) -> void:
 
 
 func _reset_connection() -> void:
+	test_map.get_node("RoundManager").clear_local_session()
 	multiplayer.multiplayer_peer = null
 
 	# Remove os personagens que ficaram da sessao anterior.

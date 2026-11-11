@@ -13,6 +13,8 @@ const CollectibleItem = preload("res://scripts/items/collectible_item.gd")
 @onready var hand_socket: Marker3D = $Head/Camera3D/HandSocket
 @onready var interaction_ray: RayCast3D = $Head/Camera3D/InteractionRay
 
+var round_spawn_transform: Transform3D
+
 var equipped_item: CollectibleItem:
 	get:
 		return inventory.get_item_in_slot(inventory.active_hand) as CollectibleItem
@@ -21,6 +23,7 @@ var interaction_requested: bool = false
 
 
 func _ready() -> void:
+	round_spawn_transform = global_transform
 	var local_player := is_multiplayer_authority()
 
 	$Head/Camera3D.current = local_player
@@ -29,19 +32,29 @@ func _ready() -> void:
 	interaction_ray.add_exception(self)
 
 	if local_player:
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		Input.mouse_mode = (
+			Input.MOUSE_MODE_CAPTURED
+			if is_round_active()
+			else Input.MOUSE_MODE_VISIBLE
+		)
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_multiplayer_authority():
 		return
+		
+	if not is_round_active():
+		return
+		
 	if backpack_ui.is_open:
 		return
+		
 	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and event.is_action_pressed("open_backpack") and not event.is_echo():
 		var item := equipped_item
 		if item != null and backpack_ui.open_menu(item):
 			get_viewport().set_input_as_handled()
 		return
+		
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
@@ -95,15 +108,21 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
+		
 	if interaction_requested:
 		interaction_requested = false
-		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not backpack_ui.is_open:
+		if is_round_active() and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not backpack_ui.is_open:
 			try_pick_up()
 
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	var controls_enabled: bool = Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not backpack_ui.is_open
+	var controls_enabled: bool = (
+		is_round_active()
+		and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
+		and not backpack_ui.is_open
+	)
+
 	var input_direction := Vector2.ZERO
 	if controls_enabled:
 		input_direction = Input.get_vector(
@@ -146,3 +165,24 @@ func try_pick_up() -> void:
 		var item: Node = collider.get_parent()
 		if item is CollectibleItem:
 			item.request_pickup.rpc_id(1)
+
+func is_round_active() -> bool:
+	var manager: Node = get_parent().get_parent().get_node_or_null("RoundManager")
+	return manager == null or manager.is_active()
+
+
+func reset_for_round() -> void:
+	if not is_multiplayer_authority():
+		return
+
+	if backpack_ui.is_open:
+		backpack_ui.close_menu(false)
+
+	interaction_requested = false
+	velocity = Vector3.ZERO
+	global_transform = round_spawn_transform
+	head.rotation = Vector3.ZERO
+	inventory.active_hand = 0
+	inventory.selection_cursor = 0
+	vitals.reset_for_round()
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

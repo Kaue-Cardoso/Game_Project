@@ -8,6 +8,7 @@ extends Node3D
 # O nome identifica a mochila irma na cena, sem mudar o caminho do item.
 @export var container_name: StringName = &""
 @export var container_slot: int = -1
+@export var extracted: bool = false
 
 @onready var pickup_area: Area3D = $PickupArea
 
@@ -23,6 +24,11 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	if extracted:
+		hide()
+		pickup_area.collision_layer = 0
+		return
+		
 	if container_name != &"":
 		var container := get_container()
 		if container == null and multiplayer.is_server():
@@ -71,7 +77,7 @@ func _process(_delta: float) -> void:
 
 @rpc("any_peer", "call_local", "reliable")
 func request_pickup() -> void:
-	if not multiplayer.is_server():
+	if not multiplayer.is_server() or not can_interact_with_round():
 		return
 
 	var sender_id := multiplayer.get_remote_sender_id()
@@ -84,7 +90,7 @@ func request_pickup() -> void:
 
 
 func _try_pickup(sender_id: int) -> void:
-	if holder_peer_id != 0 or container_name != &"":
+	if not can_interact_with_round():
 		return
 
 	var player: CharacterBody3D = get_parent().get_node_or_null(
@@ -129,7 +135,7 @@ func _try_pickup(sender_id: int) -> void:
 
 @rpc("any_peer", "call_local", "reliable")
 func request_use() -> void:
-	if not multiplayer.is_server():
+	if not multiplayer.is_server() or not can_interact_with_round():
 		return
 
 	var sender_id := multiplayer.get_remote_sender_id()
@@ -150,7 +156,10 @@ func get_container() -> Node3D:
 
 
 func can_be_stored() -> bool:
-	return item_data != null and item_data.size in [ItemData.Size.SMALL, ItemData.Size.MEDIUM]
+	return (
+		not extracted and item_data != null
+		and item_data.size in [ItemData.Size.SMALL, ItemData.Size.MEDIUM]
+	)
 
 func _use() -> void:
 	pass
@@ -161,7 +170,7 @@ func _on_released() -> void:
 
 @rpc("any_peer", "call_local", "reliable")
 func request_drop() -> void:
-	if not multiplayer.is_server():
+	if not multiplayer.is_server() or not can_interact_with_round():
 		return
 
 	var sender_id := multiplayer.get_remote_sender_id()
@@ -195,13 +204,16 @@ func _physics_process(_delta: float) -> void:
 
 
 func _try_drop(peer_id: int) -> void:
+	if not can_interact_with_round():
+		return
+		
 	var result: Variant = find_drop_transform(peer_id)
 	if result != null:
 		place_on_floor(result)
 
 
 func place_on_floor(destination: Transform3D) -> void:
-	if not multiplayer.is_server():
+	if not multiplayer.is_server() or extracted:
 		return
 
 	floor_transform = destination
@@ -267,3 +279,49 @@ func find_drop_transform(peer_id: int, side_offset: float = 0.0) -> Variant:
 		Basis.IDENTITY,
 		floor_position + Vector3.UP * ground_clearance
 	)
+
+func can_extract() -> bool:
+	return (
+		not extracted
+		and holder_peer_id == 0
+		and container_name == &""
+		and item_data != null
+		and item_data.extractable
+		and item_data.sale_value > 0
+	)
+
+func can_interact_with_round() -> bool:
+	var manager: Node = get_parent().get_node_or_null("RoundManager")
+	return manager == null or manager.is_active()
+
+func mark_extracted() -> int:
+	if not multiplayer.is_server() or not can_extract():
+		return 0
+
+	var value := item_data.sale_value
+	extracted = true
+	pending_pickups.clear()
+	pending_drop_peer_id = 0
+	_on_released()
+	return value
+
+
+func reset_for_round() -> void:
+	if not multiplayer.is_server():
+		return
+
+	pending_pickups.clear()
+	pending_drop_peer_id = 0
+	extracted = false
+	holder_peer_id = 0
+	inventory_slot = -1
+	container_name = &""
+	container_slot = -1
+	floor_transform = starting_transform
+	global_transform = starting_transform
+	_on_released()
+	_on_round_reset()
+
+
+func _on_round_reset() -> void:
+	pass

@@ -7,4 +7,5 @@ script = ExtResource("1_a7vyt")
 display_name = "Reliquia Dourada"
 weight_kg = 3.0
 sale_value = 50
+extractable = true
 metadata/_custom_type_script = "uid://0ilp0pdbhv3v"

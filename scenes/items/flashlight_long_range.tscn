@@ -2,11 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://3ix60l3uwlhw" path="res://scenes/items/flashlight.tscn" id="1_8xhwt"]
 [ext_resource type="Resource" uid="uid://5ptgfie0tg38" path="res://resources/items/flashlight_long_range.tres" id="2_lmahf"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xe56y"]
-albedo_color = Color(0.31764707, 1, 0.35686275, 1)
-emission_enabled = true
-emission = Color(6.256998e-07, 0.34784803, 0.23743668, 1)
+[ext_resource type="ArrayMesh" uid="uid://c3ar7pp2vdbyq" path="res://assets/models/flashlight/flashlight_long_range/tinker.obj" id="3_uj2r2"]
 
 [node name="FlashlightLongRange" unique_id=1867472189 instance=ExtResource("1_8xhwt")]
 light_energy = 4.0
@@ -15,4 +11,8 @@ light_angle = 15.0
 item_data = ExtResource("2_lmahf")
 
 [node name="Model" parent="." index="0" unique_id=1953282887]
-material_override = SubResource("StandardMaterial3D_xe56y")
+transform = Transform3D(0.004, -3.496911e-10, -3.496911e-10, -3.496911e-10, -0.004, 0, -3.496911e-10, 3.0570968e-17, -0.004, -0.07232859, 0.0492363, 0.27149072)
+mesh = ExtResource("3_uj2r2")
+
+[node name="SpotLight3D" parent="." index="1" unique_id=1856064324]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.12456985)

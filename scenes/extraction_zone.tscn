@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://djxiv5args7kv"]
+
+[ext_resource type="Script" uid="uid://duugi80h8bxk6" path="res://scripts/extraction_zone.gd" id="1_3al3o"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y8ujh"]
+albedo_color = Color(0.16862746, 1, 0.1882353, 1)
+emission_enabled = true
+emission = Color(0, 0.7254902, 0, 1)
+emission_energy_multiplier = 5.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mqmxf"]
+top_radius = 1.0
+bottom_radius = 1.0
+height = 0.055541992
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c77sh"]
+size = Vector3(2, 1.2, 2)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_fu8gg"]
+properties/0/path = NodePath(".:team_credits")
+properties/0/spawn = false
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:delivered_count")
+properties/1/spawn = false
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:accepting_deliveries")
+properties/2/spawn = false
+properties/2/replication_mode = 1
+
+[node name="ExtractionZone" type="Node3D" unique_id=1076268485]
+script = ExtResource("1_3al3o")
+
+[node name="Marker" type="MeshInstance3D" parent="." unique_id=387069038]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.019729018, 0)
+material_override = SubResource("StandardMaterial3D_y8ujh")
+mesh = SubResource("CylinderMesh_mqmxf")
+
+[node name="DepositArea" type="Area3D" parent="." unique_id=1079218546]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DepositArea" unique_id=1094771239]
+shape = SubResource("BoxShape3D_c77sh")
+debug_color = Color(0.93252695, 2.2525192e-05, 0.6463355, 0.972549)
+
+[node name="DeliveryHUD" type="CanvasLayer" parent="." unique_id=250813508]
+layer = 15
+visible = false
+
+[node name="Summary" type="Label" parent="DeliveryHUD" unique_id=1033793574]
+offset_left = 40.0
+offset_top = 320.0
+offset_right = 80.0
+offset_bottom = 343.0
+
+[node name="ExtractionZone" type="MultiplayerSynchronizer" parent="." unique_id=1524018056]
+replication_interval = 0.05
+replication_config = SubResource("SceneReplicationConfig_fu8gg")

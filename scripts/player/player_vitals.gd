@@ -86,7 +86,8 @@ func _physics_process(delta: float) -> void:
 		sprint_exhausted = false
 
 	is_sprinting = (
-		_input_age <= 0.75 and _controls_enabled and _moving and _wants_sprint
+		player.is_round_active()
+		and _input_age <= 0.75 and _controls_enabled and _moving and _wants_sprint
 		and not is_over_capacity() and not sprint_exhausted and current_stamina > 0.0
 	)
 	if is_sprinting:
@@ -134,3 +135,21 @@ func _process(_delta: float) -> void:
 		movement_label.text = "Correndo"
 	else:
 		movement_label.text = "Caminhando — Shift para correr"
+
+
+func reset_for_round() -> void:
+	_last_sent_state = Vector3i(-1, -1, -1)
+	_last_sent_msec = -1000
+
+	if not multiplayer.is_server():
+		return
+
+	carried_weight_kg = 0.0
+	current_stamina = max_stamina
+	is_sprinting = false
+	sprint_exhausted = false
+	_wants_sprint = false
+	_moving = false
+	_controls_enabled = false
+	_input_age = 1.0
+	_recovery_remaining = 0.0

@@ -2,13 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bj86hk3ytalei" path="res://scripts/items/collectible_item.gd" id="1_4k2ws"]
 [ext_resource type="Resource" uid="uid://cy66c5o84oqqk" path="res://resources/items/golden_relic.tres" id="2_uilgy"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gku0b"]
-albedo_color = Color(0.9607843, 0.6745098, 0.20784314, 1)
-emission_enabled = true
-
-[sub_resource type="BoxMesh" id="BoxMesh_x83gm"]
-size = Vector3(0.16, 0.16, 0.24)
+[ext_resource type="ArrayMesh" uid="uid://cs2h2nwsxby21" path="res://assets/models/coin/coin_2_gold.obj" id="3_uilgy"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_c77sh"]
 radius = 0.3
@@ -29,6 +23,9 @@ properties/3/replication_mode = 1
 properties/4/path = NodePath(".:container_slot")
 properties/4/spawn = false
 properties/4/replication_mode = 1
+properties/5/path = NodePath(".:extracted")
+properties/5/spawn = false
+properties/5/replication_mode = 1
 
 [node name="ValuableItem" type="Node3D" unique_id=1919827932]
 script = ExtResource("1_4k2ws")
@@ -36,8 +33,8 @@ item_data = ExtResource("2_uilgy")
 ground_clearance = 0.09
 
 [node name="Model" type="MeshInstance3D" parent="." unique_id=755893953]
-material_override = SubResource("StandardMaterial3D_gku0b")
-mesh = SubResource("BoxMesh_x83gm")
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.058683634, 0)
+mesh = ExtResource("3_uilgy")
 
 [node name="PickupArea" type="Area3D" parent="." unique_id=1549942459]
 collision_layer = 2

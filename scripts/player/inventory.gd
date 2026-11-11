@@ -107,6 +107,10 @@ func toggle_active_hand() -> void:
 func select_slot(slot_index: int) -> void:
 	if not player.is_multiplayer_authority():
 		return
+		
+	if not player.is_round_active():
+		return
+
 	if slot_index < 0 or slot_index >= SLOT_COUNT:
 		return
 
