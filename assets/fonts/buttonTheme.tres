@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://4lt26mjid5o4"]
+
+[ext_resource type="FontFile" uid="uid://pcisbr06t0g0" path="res://assets/fonts/Momo_Signature/MomoSignature-Regular.ttf" id="1_1ie8s"]
+
+[resource]
+default_font = ExtResource("1_1ie8s")
+Button/constants/outline_size = 5

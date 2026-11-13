@@ -5,6 +5,7 @@ extends "res://scripts/items/collectible_item.gd"
 @export var light_angle: float = 35.0
 @export var is_on: bool = false
 
+
 @onready var light: SpotLight3D = $SpotLight3D
 
 
@@ -21,6 +22,7 @@ func _process(delta: float) -> void:
 	super(delta)
 	light.visible = is_equipped() and is_on
 
+	
 
 func _use() -> void:
 	is_on = not is_on

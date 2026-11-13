@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dnorwwxei2e82"]
+
+[ext_resource type="PackedScene" uid="uid://o3evd8c855f2" path="res://assets/models/Map/MapaGLB.glb" id="1_3q283"]
+[ext_resource type="Shader" uid="uid://187oyj3agm1h" path="res://shaders/normal_fix.gdshader" id="2_3g2jg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rg1t3"]
+render_priority = 0
+shader = ExtResource("2_3g2jg")
+shader_parameter/cor_base = Color(1, 1, 1, 1)
+
+[node name="Tinkercad GLTF Scene" unique_id=410840132 instance=ExtResource("1_3q283")]
+transform = Transform3D(-0.3, 0, -2.6226834e-08, 0, 0.3, 0, 2.6226834e-08, 0, -0.3, 0, 0, 0)
+
+[node name="Mesh_Mesh_head_geo_001_lambert2SG_001" parent="Node" parent_id_path=PackedInt32Array(1030034473) index="0" unique_id=1010683519]
+material_override = SubResource("ShaderMaterial_rg1t3")

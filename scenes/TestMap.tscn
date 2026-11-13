@@ -1,16 +1,32 @@
 [gd_scene format=3 uid="uid://8m1cudpjrwat"]
 
-[ext_resource type="Material" uid="uid://d0mk1wqea5okh" path="res://assets/texture/Ground048_1K-PNG/Ground048_1K-PNG.tres" id="1_c2xor"]
 [ext_resource type="Script" uid="uid://cj7gv1ljpj7o5" path="res://scripts/test_map.gd" id="1_q04aa"]
+[ext_resource type="Texture2D" uid="uid://b3f8t8c35xg5f" path="res://assets/texture/madeira estilizadas/StylizedWoodPlanks/StylizedWoodPlanks_01/StylizedWoodPlanks_01_basecolor.jpg" id="2_8p8sg"]
+[ext_resource type="Texture2D" uid="uid://vdxvp16ymjbl" path="res://assets/texture/madeira estilizadas/StylizedWoodPlanks/StylizedWoodPlanks_01/StylizedWoodPlanks_01_ambientocclusion.jpg" id="3_gm77r"]
 [ext_resource type="PackedScene" uid="uid://3ix60l3uwlhw" path="res://scenes/items/flashlight.tscn" id="3_s2mfq"]
+[ext_resource type="Texture2D" uid="uid://b36ciqaktf2t5" path="res://assets/texture/madeira estilizadas/StylizedWoodPlanks/StylizedWoodPlanks_01/StylizedWoodPlanks_01_height.jpg" id="4_ujape"]
+[ext_resource type="Texture2D" uid="uid://7jmun4s0pxrg" path="res://assets/texture/madeira estilizadas/StylizedWoodPlanks/StylizedWoodPlanks_01/StylizedWoodPlanks_01_normal.jpg" id="5_7gbol"]
 [ext_resource type="PackedScene" uid="uid://c0d2i0hnt0te4" path="res://scenes/items/flashlight_long_range.tscn" id="5_q04aa"]
 [ext_resource type="PackedScene" uid="uid://c7xrrkutybjh1" path="res://scenes/items/valuable_item.tscn" id="6_s2mfq"]
+[ext_resource type="Texture2D" uid="uid://0a8irpk3e2d2" path="res://assets/texture/madeira estilizadas/StylizedWoodPlanks/StylizedWoodPlanks_01/StylizedWoodPlanks_01_roughness.jpg" id="6_ssijy"]
 [ext_resource type="PackedScene" uid="uid://d0ljdurvu66bq" path="res://scenes/items/large_relic.tscn" id="7_large"]
 [ext_resource type="PackedScene" path="res://scenes/items/backpack_small.tscn" id="8_backpack"]
 [ext_resource type="PackedScene" uid="uid://djxiv5args7kv" path="res://scenes/extraction_zone.tscn" id="9_hvxcm"]
 [ext_resource type="Script" uid="uid://dmv87edrbloxk" path="res://scripts/round_manager.gd" id="10_6tgn8"]
-[ext_resource type="PackedScene" uid="uid://fnv0i2vu7ocm" path="res://scenes/apagardps.tscn" id="11_l346b"]
-[ext_resource type="PackedScene" uid="uid://baw2tx525mn51" path="res://scenes/MapaTinker.tscn" id="12_eqffy"]
+[ext_resource type="PackedScene" uid="uid://dnorwwxei2e82" path="res://scenes/MapToon.tscn" id="10_l346b"]
+[ext_resource type="Material" uid="uid://boipyomb1wmi3" path="res://assets/texture/Bricks113A_1K-PNG/Bricks113A_1K-PNG.tres" id="10_nhfgm"]
+[ext_resource type="Theme" uid="uid://2ym3yf3nmbpf" path="res://assets/fonts/titleFont.tres" id="14_gm77r"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tn7ur"]
+albedo_texture = ExtResource("2_8p8sg")
+roughness_texture = ExtResource("6_ssijy")
+normal_enabled = true
+normal_texture = ExtResource("5_7gbol")
+ao_enabled = true
+ao_texture = ExtResource("3_gm77r")
+heightmap_enabled = true
+heightmap_texture = ExtResource("4_ujape")
+uv1_scale = Vector3(10, 10, 10)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_x83gm"]
 size = Vector2(100, 100)
@@ -45,9 +61,6 @@ properties/4/replication_mode = 1
 [sub_resource type="BoxShape3D" id="BoxShape3D_rjycd"]
 size = Vector3(60, 0.2, 60)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nhfgm"]
-albedo_color = Color(0.0018410678, 0.0018410682, 0.0018410678, 1)
-
 [sub_resource type="BoxMesh" id="BoxMesh_c77sh"]
 size = Vector3(60, 0.2, 60)
 
@@ -57,7 +70,7 @@ script = ExtResource("1_q04aa")
 [node name="Ground" type="StaticBody3D" parent="." unique_id=1397342291]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=433006993]
-material_override = ExtResource("1_c2xor")
+material_override = SubResource("StandardMaterial3D_tn7ur")
 mesh = SubResource("PlaneMesh_x83gm")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=923178453]
@@ -65,7 +78,6 @@ shape = SubResource("BoxShape3D_x83gm")
 
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=1004071357]
 transform = Transform3D(0.8660254, 0.43301272, -0.24999999, 0, 0.49999997, 0.86602545, 0.5, -0.75, 0.43301266, 0, 0, 0)
-visible = false
 shadow_enabled = true
 
 [node name="Flashlight" parent="." unique_id=1935178392 instance=ExtResource("3_s2mfq")]
@@ -99,7 +111,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.512642, 0.180974, -9.6658
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1388264, 0.21, 0.5)
 
 [node name="ExtractionZone" parent="." unique_id=1076268485 instance=ExtResource("9_hvxcm")]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 6.0661798, 1.0000006, 22.622332)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 4.612326, 1.0000008, 28.471996)
 
 [node name="RoundManager" type="Node" parent="." unique_id=95142146]
 script = ExtResource("10_6tgn8")
@@ -107,14 +119,15 @@ round_duration = 120.0
 
 [node name="RoundHUD" type="CanvasLayer" parent="RoundManager" unique_id=587819123]
 layer = 25
-visible = false
 
 [node name="Panel" type="PanelContainer" parent="RoundManager/RoundHUD" unique_id=1824580090]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 77.0
+offset_left = -134.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = 85.0
 grow_horizontal = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="RoundManager/RoundHUD/Panel" unique_id=1416078125]
@@ -122,12 +135,15 @@ layout_mode = 2
 
 [node name="StateLabel" type="Label" parent="RoundManager/RoundHUD/Panel/VBoxContainer" unique_id=1426894411]
 layout_mode = 2
+theme = ExtResource("14_gm77r")
 
 [node name="Summary" type="Label" parent="RoundManager/RoundHUD/Panel/VBoxContainer" unique_id=1308422221]
 layout_mode = 2
+theme = ExtResource("14_gm77r")
 
 [node name="StartButton" type="Button" parent="RoundManager/RoundHUD/Panel/VBoxContainer" unique_id=379987744]
 layout_mode = 2
+theme = ExtResource("14_gm77r")
 text = "Iniciar Missao"
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="RoundManager" unique_id=10649383]
@@ -136,17 +152,13 @@ replication_config = SubResource("SceneReplicationConfig_l346b")
 [node name="Estrutura" type="Node3D" parent="." unique_id=1062369941]
 
 [node name="Ceiling" type="StaticBody3D" parent="Estrutura" unique_id=1897150806]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96.83847, 5.9564657, -5.982683)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17676353, 5.9564657, -0.46905136)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Estrutura/Ceiling" unique_id=113984965]
 shape = SubResource("BoxShape3D_rjycd")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Estrutura/Ceiling" unique_id=918726547]
-material_override = SubResource("StandardMaterial3D_nhfgm")
+material_override = ExtResource("10_nhfgm")
 mesh = SubResource("BoxMesh_c77sh")
 
-[node name="Mapa" parent="Estrutura" unique_id=1044956712 instance=ExtResource("12_eqffy")]
-transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0, 0)
-
-[node name="Tinkercad GLTF Scene" parent="Estrutura" unique_id=1712035815 instance=ExtResource("11_l346b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0010695, 0, 11.625399)
+[node name="Tinkercad GLTF Scene" parent="Estrutura" unique_id=410840132 instance=ExtResource("10_l346b")]

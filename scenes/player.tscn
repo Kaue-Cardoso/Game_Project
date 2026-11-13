@@ -5,21 +5,8 @@
 [ext_resource type="Script" uid="uid://w45e76powb7t" path="res://scripts/player/flashlight_glare.gd" id="2_qhqgy"]
 [ext_resource type="Script" uid="uid://bplxao3ao7rw4" path="res://scripts/player/inventory.gd" id="4_dqkch"]
 [ext_resource type="PackedScene" path="res://scenes/ui/backpack_ui.tscn" id="5_backpack_ui"]
-[ext_resource type="Script" path="res://scripts/player/player_vitals.gd" id="6_vitals"]
-
-[sub_resource type="SceneReplicationConfig" id="Replication_vitals"]
-properties/0/path = NodePath(".:carried_weight_kg")
-properties/0/spawn = false
-properties/0/replication_mode = 1
-properties/1/path = NodePath(".:current_stamina")
-properties/1/spawn = false
-properties/1/replication_mode = 1
-properties/2/path = NodePath(".:is_sprinting")
-properties/2/spawn = false
-properties/2/replication_mode = 1
-properties/3/path = NodePath(".:sprint_exhausted")
-properties/3/spawn = false
-properties/3/replication_mode = 1
+[ext_resource type="Theme" uid="uid://2ym3yf3nmbpf" path="res://assets/fonts/titleFont.tres" id="6_ur7pv"]
+[ext_resource type="Script" uid="uid://btb183anmw0j7" path="res://scripts/player/player_vitals.gd" id="6_vitals"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_x83gm"]
 radius = 0.3
@@ -46,6 +33,32 @@ shader_parameter/strength = 0.0
 shader_parameter/source_uv = Vector2(0.5, 0.5)
 shader_parameter/aspect_ratio = 1.0
 shader_parameter/glare_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_smehm"]
+bg_color = Color(0, 0.72156864, 0.11372549, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="SceneReplicationConfig" id="Replication_vitals"]
+properties/0/path = NodePath(".:carried_weight_kg")
+properties/0/spawn = false
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:current_stamina")
+properties/1/spawn = false
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:is_sprinting")
+properties/2/spawn = false
+properties/2/replication_mode = 1
+properties/3/path = NodePath(".:sprint_exhausted")
+properties/3/spawn = false
+properties/3/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" unique_id=17088492]
 script = ExtResource("1_3vyb7")
@@ -76,8 +89,8 @@ collide_with_areas = true
 [node name="HandSocketLeft" type="Marker3D" parent="Head/Camera3D" unique_id=1520128140]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, -0.2, -0.45)
 
-[node name="TwoHandSocket" type="Marker3D" parent="Head/Camera3D"]
-position = Vector3(0, -0.3, -0.7)
+[node name="TwoHandSocket" type="Marker3D" parent="Head/Camera3D" unique_id=130092633]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -0.7)
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=345631451]
 replication_interval = 0.05
@@ -108,37 +121,40 @@ offset_left = 20.0
 offset_top = 20.0
 offset_right = 21.0
 offset_bottom = 43.0
+theme = ExtResource("6_ur7pv")
 
-[node name="BackpackUI" parent="." instance=ExtResource("5_backpack_ui")]
-
-[node name="Status" type="VBoxContainer" parent="InventoryHUD"]
-offset_left = 20.0
-offset_top = 160.0
-offset_right = 300.0
-offset_bottom = 270.0
+[node name="Status" type="VBoxContainer" parent="InventoryHUD" unique_id=1049850192]
+offset_left = 8.0
+offset_top = 529.0
+offset_right = 288.0
+offset_bottom = 639.0
+theme = ExtResource("6_ur7pv")
 theme_override_constants/separation = 6
 
-[node name="LoadLabel" type="Label" parent="InventoryHUD/Status"]
+[node name="LoadLabel" type="Label" parent="InventoryHUD/Status" unique_id=1544068652]
 layout_mode = 2
 text = "Carga: 0,0 / 40,0 kg"
 
-[node name="StaminaLabel" type="Label" parent="InventoryHUD/Status"]
+[node name="StaminaLabel" type="Label" parent="InventoryHUD/Status" unique_id=1306456036]
 layout_mode = 2
 text = "Stamina: 100 / 100"
 
-[node name="StaminaBar" type="ProgressBar" parent="InventoryHUD/Status"]
+[node name="StaminaBar" type="ProgressBar" parent="InventoryHUD/Status" unique_id=1599608892]
 custom_minimum_size = Vector2(240, 14)
 layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_smehm")
 value = 100.0
 show_percentage = false
 
-[node name="MovementLabel" type="Label" parent="InventoryHUD/Status"]
+[node name="MovementLabel" type="Label" parent="InventoryHUD/Status" unique_id=1656454804]
 layout_mode = 2
 text = "Caminhando — Shift para correr"
 
-[node name="Vitals" type="Node" parent="."]
+[node name="BackpackUI" parent="." unique_id=1301193845 instance=ExtResource("5_backpack_ui")]
+
+[node name="Vitals" type="Node" parent="." unique_id=937136997]
 script = ExtResource("6_vitals")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Vitals"]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Vitals" unique_id=884444608]
 replication_interval = 0.05
 replication_config = SubResource("Replication_vitals")

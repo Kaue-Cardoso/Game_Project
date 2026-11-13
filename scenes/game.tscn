@@ -1,0 +1,36 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_game"]
+[ext_resource type="PackedScene" uid="uid://8m1cudpjrwat" path="res://scenes/TestMap.tscn" id="2_map"]
+
+[node name="Game" type="Node"]
+script = ExtResource("1_game")
+
+[node name="TestMap" parent="." instance=ExtResource("2_map")]
+
+[node name="ConnectionHUD" type="CanvasLayer" parent="."]
+layer = 40
+
+[node name="CenterContainer" type="CenterContainer" parent="ConnectionHUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="ConnectionHUD/CenterContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ConnectionHUD/CenterContainer/Panel"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="StatusLabel" type="Label" parent="ConnectionHUD/CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Conectando..."
+horizontal_alignment = 1
+
+[node name="CancelButton" type="Button" parent="ConnectionHUD/CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Voltar ao menu"
